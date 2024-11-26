@@ -1,0 +1,67 @@
+package ar.com.echeq.model.dto;
+
+import lombok.Data;
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Data
+public class EcheqDTO {
+    private int totalSigners;
+    private List<SignerDTO> signers;
+    private int groupId;
+    private boolean certificateIssued;
+    private boolean agreedEcheq;
+    private String echeqCharacter;
+    private String echeqConcept;
+    private String echeqId;
+    private int echeqMode;
+    private String echeqPaymentReason;
+    private String echeqNumber;
+    private String echeqType;
+    private String cmc7;
+    private String visualizationCode;
+    private int issuanceCode;
+    private String status;
+    private LocalDateTime issuanceDate;
+    private LocalDateTime paymentDate;
+    private boolean paymentDateExpired;
+    private double amount;
+    private String cancellationReason;
+    private String repudiationReason;
+    private String returnReason;
+    private String echeqbookNumber;
+    private boolean rePresent;
+    private boolean repudiationEndorsement;
+    private boolean requestingAgreement;
+    private boolean onp;
+    private boolean agreementRejected;
+    private LocalDateTime lastModificationDate;
+    private String custodyCbu;
+    private String depositCbu;
+    private String returnRequestCuit;
+    private String finalBeneficiaryDocumentType;
+    private String finalBeneficiaryDocument;
+    private String batchNumber;
+    private boolean ceded;
+    private boolean pendingCession;
+    private String finalBeneficiaryName;
+    private boolean lastEndorser;
+    private boolean guaranteed;
+    private boolean collectionMandate;
+    private boolean negotiationMandate;
+    private boolean lastMandator;
+    private String lastEndorserBusinessName;
+    private AccountDTO issuingAccount;
+    private BeneficiaryDTO issuedTo;
+    private BeneficiaryDTO holding;
+    private int totalEndorsements;
+    private List<EndorsementDTO> endorsements;
+    private int totalEcheqPaymentReferences;
+    private List<PaymentReferenceDTO> echeqPaymentReferences;
+    private int totalRejections;
+    private List<RejectionDTO> rejections;
+    private int totalGuarantors;
+    private List<GuarantorDTO> guarantors;
+    private int totalCessions;
+    private List<CessionDTO> cessions;
+}

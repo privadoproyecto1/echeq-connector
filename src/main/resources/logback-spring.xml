@@ -1,0 +1,16 @@
+<configuration>
+    <springProperty scope="context" name="spring.application.name" source="spring.application.name"/>
+    <property name="LOG_PATTERN" value="%white(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C): %white(${spring.application.name})- %msg%n%throwable"/>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <immediateFlush>true</immediateFlush>
+            <withJansi>true</withJansi>
+        </encoder>
+    </appender>
+
+
+    <root level="debug">
+        <appender-ref ref="CONSOLE" />
+    </root>
+</configuration>
