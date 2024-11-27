@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -42,8 +43,8 @@ public class EcheqController {
                     content = @Content)})
     @GetMapping("/{cuit}/{echeqId}")
     public ResponseEntity<EcheqDTO> getEcheq(
-            @NotNull @Parameter(in = ParameterIn.PATH, description = "CUIT of the echeq", required = true) @PathVariable String cuit,
-            @NotNull @Parameter(in = ParameterIn.PATH, description = "ID of the echeq", required = true) @PathVariable("echeqId") String echeqId) {
+            @Parameter(in = ParameterIn.PATH, description = "CUIT of the echeq", required = true) @PathVariable String cuit,
+            @Parameter(in = ParameterIn.PATH, description = "ID of the echeq", required = true) @PathVariable("echeqId") String echeqId) {
         log.info("Getting echeq information");
         return ResponseEntity.ok(echeqService.getEcheq(cuit, echeqId));
     }
@@ -56,10 +57,10 @@ public class EcheqController {
             @ApiResponse(responseCode = "400", description = "Invalid input",
                     content = @Content)})
     @GetMapping
-    public ResponseEntity<List<EcheqDTO>> getEcheqs(
-            @NotNull @Parameter(in = ParameterIn.QUERY, description = "Request parameters for fetching echeqs", required = true) @Valid @Validated GetEcheqsRequestDTO request) {
+    public Flux<EcheqDTO> getEcheqs(
+            @Parameter(in = ParameterIn.QUERY, description = "Request parameters for fetching echeqs", required = true) GetEcheqsRequestDTO request) {
         log.info("Getting list of echeqs");
-        return ResponseEntity.ok(echeqService.getEcheqs(request));
+        return echeqService.getEcheqs(request);
     }
 
 

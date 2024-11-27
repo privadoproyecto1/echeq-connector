@@ -70,7 +70,7 @@ public class WebClientConfig {
         return WebClient.builder()
                 .baseUrl(baseUrl)
                 .clientConnector(WebClientConnectorFactory.createConnector(connectTimeout, readTimeout))
-                .filter(addCustomHeadersFilter())
+                //.filter(addCustomHeadersFilter())
                 .build();
     }
 

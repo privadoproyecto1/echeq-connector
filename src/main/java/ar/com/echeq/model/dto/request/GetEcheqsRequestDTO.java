@@ -27,5 +27,5 @@ public class GetEcheqsRequestDTO {
     private Date paymentDateTo;
     private String page;
     private String items;
-    private String select = "cheque, cheque.rechazos, cheque.cesiones, cheque.avalistas, cheque.endosos, cheque.chq_referencias_pago";
+    private String select = "cheques, cheques.rechazos, cheques.cesiones, cheques.avalistas, cheques.endosos, cheques.chq_referencias_pago";
 }

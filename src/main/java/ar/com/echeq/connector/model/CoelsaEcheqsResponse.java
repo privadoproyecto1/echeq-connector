@@ -3,193 +3,187 @@ package ar.com.echeq.connector.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Data
-public class CoelsaEcheqResponse {
+public class CoelsaEcheqsResponse {
 
-    @JsonProperty("cheque")
-    private CoelsaEcheq coelsaEcheq;
+    @JsonProperty("cheques")
+    private List<CoelsaEcheq> coelsaEcheq;
 
     @JsonProperty("respuesta")
     private CoelsaEcheqsResponse response;
 
     @Data
     public static class CoelsaEcheq {
-        @JsonProperty("totalFirmantes")
-        private int totalSigners;
 
-        @JsonProperty("firmantes")
-        private List<CoelsaSigner> signers;
-
-        @JsonProperty("agrupadorId")
+        @JsonProperty("agrupador_id")
         private int groupId;
 
-        @JsonProperty("certificadoEmitido")
+        @JsonProperty("certificado_emitido")
         private boolean certificateIssued;
 
-        @JsonProperty("chequeAcordado")
+        @JsonProperty("cheque_acordado")
         private boolean agreedCheque;
 
-        @JsonProperty("chequeCaracter")
+        @JsonProperty("cheque_caracter")
         private String chequeCharacter;
 
-        @JsonProperty("chequeConcepto")
+        @JsonProperty("cheque_concepto")
         private String chequeConcept;
 
-        @JsonProperty("chequeId")
+        @JsonProperty("cheque_id")
         private String chequeId;
 
-        @JsonProperty("chequeModo")
+        @JsonProperty("cheque_modo")
         private int chequeMode;
 
-        @JsonProperty("chequeMotivoPago")
+        @JsonProperty("cheque_motivo_pago")
         private String chequePaymentReason;
 
-        @JsonProperty("chequeNumero")
+        @JsonProperty("cheque_numero")
         private String chequeNumber;
 
-        @JsonProperty("chequeTipo")
+        @JsonProperty("cheque_tipo")
         private String chequeType;
 
         @JsonProperty("cmc7")
         private String cmc7;
 
-        @JsonProperty("codVisualizacion")
+        @JsonProperty("cod_visualizacion")
         private String visualizationCode;
 
-        @JsonProperty("codigoEmision")
+        @JsonProperty("codigo_emision")
         private String issuanceCode;
 
         @JsonProperty("estado")
         private String status;
 
-        @JsonProperty("fechaEmision")
-        private LocalDateTime issuanceDate;
+        @JsonProperty("fecha_emision")
+        private Date issuanceDate;
 
-        @JsonProperty("fechaPago")
-        private LocalDateTime paymentDate;
+        @JsonProperty("fecha_pago")
+        private Date paymentDate;
 
-        @JsonProperty("fechaPagoVencida")
+        @JsonProperty("fecha_pago_vencida")
         private boolean paymentDateExpired;
 
         @JsonProperty("monto")
         private double amount;
 
-        @JsonProperty("motivoAnulacion")
+        @JsonProperty("motivo_anulacion")
         private String cancellationReason;
 
-        @JsonProperty("motivoRepudioEmision")
+        @JsonProperty("motivo_repudio_emision")
         private String issuanceRepudiationReason;
 
-        @JsonProperty("motivoDevolucion")
+        @JsonProperty("motivo_devolucion")
         private String returnReason;
 
-        @JsonProperty("numeroChequera")
+        @JsonProperty("numero_chequera")
         private String checkbookNumber;
 
-        @JsonProperty("rePresentar")
+        @JsonProperty("re_presentar")
         private boolean rePresent;
 
-        @JsonProperty("repudioEndoso")
+        @JsonProperty("repudio_endoso")
         private boolean endorsementRepudiation;
 
-        @JsonProperty("solicitandoAcuerdo")
+        @JsonProperty("solicitando_acuerdo")
         private boolean requestingAgreement;
 
         @JsonProperty("onp")
         private boolean onp;
 
-        @JsonProperty("acuerdoRechazado")
+        @JsonProperty("acuerdo_rechazado")
         private boolean agreementRejected;
 
-        @JsonProperty("fechaUltModif")
-        private LocalDateTime lastModificationDate;
+        @JsonProperty("fecha_ult_modif")
+        private Date lastModificationDate;
 
-        @JsonProperty("cbuCustodia")
+        @JsonProperty("cbu_custodia")
         private String custodyCbu;
 
-        @JsonProperty("cbuDeposito")
+        @JsonProperty("cbu_deposito")
         private String depositCbu;
 
-        @JsonProperty("cuitSolicDevol")
+        @JsonProperty("cuit_solic_devol")
         private String returnRequestCuit;
 
-        @JsonProperty("beneficiarioFinalDocumentoTipo")
+        @JsonProperty("beneficiario_final_documento_tipo")
         private String finalBeneficiaryDocumentType;
 
-        @JsonProperty("beneficiarioFinalDocumento")
+        @JsonProperty("beneficiario_final_documento")
         private String finalBeneficiaryDocument;
 
-        @JsonProperty("nroLote")
+        @JsonProperty("nro_lote")
         private String batchNumber;
 
         @JsonProperty("cedido")
         private boolean assigned;
 
-        @JsonProperty("cesionPendiente")
+        @JsonProperty("cesion_pendiente")
         private boolean pendingAssignment;
 
-        @JsonProperty("beneficiarioFinalNombre")
+        @JsonProperty("beneficiario_final_nombre")
         private String finalBeneficiaryName;
 
-        @JsonProperty("esUltimoEndosante")
+        @JsonProperty("es_ultimo_endosante")
         private boolean isLastEndorser;
 
         @JsonProperty("avalado")
         private boolean guaranteed;
 
-        @JsonProperty("mandatoCobro")
+        @JsonProperty("mandato_cobro")
         private boolean collectionMandate;
 
-        @JsonProperty("mandatoNeg")
+        @JsonProperty("mandato_neg")
         private boolean negotiationMandate;
 
-        @JsonProperty("esUltimoMandante")
+        @JsonProperty("es_ultimo_mandante")
         private boolean isLastMandator;
 
-        @JsonProperty("ultimoEndosanteRazonSocial")
+        @JsonProperty("ultimo_endosante_razon_social")
         private String lastEndorserBusinessName;
 
-        @JsonProperty("cuentaEmisora")
+        @JsonProperty("cuenta_emisora")
         private CoelsaIssuingAccount issuingAccount;
 
-        @JsonProperty("emitidoA")
+        @JsonProperty("emitido_a")
         private CoelsaIssuedTo issuedTo;
 
         @JsonProperty("tenencia")
         private CoelsaTenure tenure;
 
-        @JsonProperty("totalEndosos")
+        @JsonProperty("total_endosos")
         private int totalEndorsements;
 
         @JsonProperty("endosos")
         private List<CoelsaEndorsement> endorsements;
 
-        @JsonProperty("totalChqReferenciasPago")
+        @JsonProperty("total_chq_referencias_pago")
         private int totalChequePaymentReferences;
 
-        @JsonProperty("chqReferenciasPago")
+        @JsonProperty("chq_referencias_pago")
         private List<CoelsaEcheqResponseGetPaymentReference> chequePaymentReferences;
 
-        @JsonProperty("totalRechazos")
+        @JsonProperty("total_rechazos")
         private int totalRejections;
 
         @JsonProperty("rechazos")
         private List<CoelsaGetRejections> rejections;
 
-        @JsonProperty("totalAvalistas")
+        @JsonProperty("total_avalistas")
         private int totalGuarantors;
 
         @JsonProperty("avalistas")
         private List<CoelsaGuarantor> guarantors;
 
-        @JsonProperty("totalCesiones")
+        @JsonProperty("total_cesiones")
         private int totalAssignments;
 
         @JsonProperty("cesiones")
         private List<CoelsaAssignment> assignments;
     }
-
 }

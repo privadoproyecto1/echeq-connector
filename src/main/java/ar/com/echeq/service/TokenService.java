@@ -12,10 +12,11 @@ public class TokenService {
 
     public String getTokenFromCoelsa() {
 
-        return tokenWebClient.post()
-                .uri("/api/v1/token")
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
+        return "token";
+        //return tokenWebClient.post()
+        //        .uri("/api/v1/token")
+        //        .retrieve()
+        //        .bodyToMono(String.class)
+        //        .block();
     }
 }

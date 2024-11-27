@@ -1,10 +1,10 @@
 package ar.com.echeq.service;
 
 import ar.com.echeq.connector.CoelsaClientConnector;
+import ar.com.echeq.connector.model.CoelsaEcheqPaymentsResponse;
 import ar.com.echeq.exception.CoelsaPaymentRejectException;
 import ar.com.echeq.mapper.EcheqPaymentsMapper;
 import ar.com.echeq.model.dto.request.EcheqInternalClearingDTO;
-import ar.com.echeq.model.dto.request.InternalClearingDTO;
 import ar.com.echeq.model.dto.request.RejectPaymentDTO;
 import ar.com.echeq.model.dto.request.RejectPaymentOutsideDTO;
 import org.springframework.stereotype.Service;
@@ -23,65 +23,37 @@ public class EcheqPaymentService {
         this.coelsaClientConnector = coelsaClientConnector;
     }
 
-
-
-    private String buildFilterString(String cuit, String echeqId) {
-        return String.format("cuit eq '%s' and cheque.cheque_id eq '%s'", cuit, echeqId);
-    }
-
-    private String buildDefaultSelect(){
-        return "cheque, cheque.rechazos, cheque.cesiones, cheque.avalistas, cheque.endosos, cheque.chq_referencias_pago";
-    }
-
     public void rejectPayment(RejectPaymentDTO rejectPaymentDTO) {
-
         var coelsaRejectPaymentDTO = echeqPaymentsMapper.toCoelsaRejectedPayment(rejectPaymentDTO);
-
-        var coelsaEcheqResponse = Optional.ofNullable(coelsaClientConnector.rejectPayment(coelsaRejectPaymentDTO))
-                .orElseThrow(() -> new RuntimeException("No response from Coelsa"));
-
-        var responseCode = coelsaEcheqResponse.getResponse().stream()
-                .findFirst()
-                .map(response -> response.getResponse().getCode())
-                .orElseThrow(() -> new RuntimeException("Invalid response structure"));
-
-        if (!"0000".equals(responseCode)) {
-            throw new CoelsaPaymentRejectException("Error rejecting payment: " + responseCode);
-        }
+        handleResponse(coelsaClientConnector.rejectPayment(coelsaRejectPaymentDTO), "Error rejecting payment: ");
     }
 
     public void rejectOutsideClearing(RejectPaymentOutsideDTO rejectPaymentOutsideDTO) {
-
         var coelsaRejectPayment = echeqPaymentsMapper.toCoelsaRejectOutsideClearing(rejectPaymentOutsideDTO);
-
-        var coelsaEcheqResponse = Optional.ofNullable(coelsaClientConnector.rejectOutsideClearing(coelsaRejectPayment))
-                .orElseThrow(() -> new RuntimeException("No response from Coelsa"));
-
-        var responseCode = coelsaEcheqResponse.getResponse().stream()
-                .findFirst()
-                .map(response -> response.getResponse().getCode())
-                .orElseThrow(() -> new RuntimeException("Invalid response structure"));
-
-        if (!"0000".equals(responseCode)) {
-            throw new CoelsaPaymentRejectException("Error rejecting outside clearing: " + responseCode);
-        }
+        handleResponse(coelsaClientConnector.rejectOutsideClearing(coelsaRejectPayment), "Error rejecting outside clearing: ");
     }
 
     public void payInternalClearing(EcheqInternalClearingDTO echeqInternalClearingDTO) {
-
         var coelsaInternalClearing = echeqPaymentsMapper.toCoelsaPayInternalClearing(echeqInternalClearingDTO);
+        handleResponse(coelsaClientConnector.payInternalClearing(coelsaInternalClearing), "Error paying internal clearing: ");
+    }
 
-        var coelsaEcheqResponse = Optional.ofNullable(coelsaClientConnector.payInternalClearing(coelsaInternalClearing))
-                .orElseThrow(() -> new RuntimeException("No response from Coelsa"));
+    private void handleResponse(CoelsaEcheqPaymentsResponse response, String errorMessage) {
+        var responseCode = getResponseCode(response);
+        validateResponseCode(responseCode, errorMessage);
+    }
 
-        var responseCode = coelsaEcheqResponse.getResponse().stream()
+    private String getResponseCode(CoelsaEcheqPaymentsResponse coelsaEcheqPaymentsResponse) {
+        return Optional.ofNullable(coelsaEcheqPaymentsResponse).orElseThrow(() -> new RuntimeException("No response from Coelsa"))
+                .getResponse().stream()
                 .findFirst()
                 .map(response -> response.getResponse().getCode())
                 .orElseThrow(() -> new RuntimeException("Invalid response structure"));
+    }
 
+    private void validateResponseCode(String responseCode, String errorMessage) {
         if (!"0000".equals(responseCode)) {
-            throw new CoelsaPaymentRejectException("Error paying internal clearing: " + responseCode);
+            throw new CoelsaPaymentRejectException(errorMessage + responseCode);
         }
-
     }
 }

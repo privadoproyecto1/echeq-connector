@@ -1,12 +1,13 @@
 package ar.com.echeq.service;
 
 import ar.com.echeq.connector.CoelsaClientConnector;
-import ar.com.echeq.connector.model.CoelsaEcheq;
+import ar.com.echeq.connector.model.CoelsaEcheqResponse;
 import ar.com.echeq.mapper.EcheqMapper;
 import ar.com.echeq.model.dto.EcheqDTO;
 import ar.com.echeq.model.dto.request.GetEcheqsRequestDTO;
 import ar.com.echeq.mapper.EcheqRequestMap;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -27,21 +28,21 @@ public class EcheqService {
 
         String filterString = buildFilterString(cuit, echeqId);
 
-        CoelsaEcheq coelsaEcheq = coelsaClientConnector.getEcheq(filterString, buildDefaultSelect());
+        CoelsaEcheqResponse coelsaEcheqResponse = coelsaClientConnector.getEcheq(filterString, buildDefaultSelect());
 
-        return echeqMapper.toEcheqDTO(coelsaEcheq);
+        return echeqMapper.toEcheqDTO(coelsaEcheqResponse.getCoelsaEcheq());
     }
 
-    public List<EcheqDTO> getEcheqs(GetEcheqsRequestDTO request) {
+    public Flux<EcheqDTO> getEcheqs(GetEcheqsRequestDTO request) {
 
         EcheqRequestMap echeqRequestMap = echeqMapper.toEcheqRequestMap(request);
 
-        List<CoelsaEcheq> coelsaEcheqs = coelsaClientConnector.getEcheqs(echeqRequestMap.getFilterString(),
-                echeqRequestMap.getPagString(),
-                echeqRequestMap.getOrderBy(),
-                request.getSelect());
-
-        return echeqMapper.toEcheqListDTO(coelsaEcheqs);
+        return coelsaClientConnector.getEcheqs(
+                        echeqRequestMap.getFilterString(),
+                        echeqRequestMap.getPagString(),
+                        echeqRequestMap.getOrderBy(),
+                        request.getSelect())
+                .flatMap(response -> Flux.fromIterable(echeqMapper.toEcheqDTOList(response.getCoelsaEcheq())));
     }
 
     private String buildFilterString(String cuit, String echeqId) {
